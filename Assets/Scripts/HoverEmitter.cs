@@ -7,6 +7,7 @@ public class HoverEmitter : MonoBehaviour
 {
     private ParticleSystem _particleSystem;
     [SerializeField] private int emitCount;
+    [SerializeField] private AudioClip sound;
     private void Start()
     {
         _particleSystem = GetComponent<ParticleSystem>();
@@ -15,5 +16,6 @@ public class HoverEmitter : MonoBehaviour
     private void OnMouseEnter()
     {
         _particleSystem.Emit(emitCount);
+        GetComponent<AudioSource>().PlayOneShot(sound);
     }
 }
