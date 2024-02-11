@@ -235,7 +235,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9127182991314768267}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 2, z: -10}
   m_LocalScale: {x: 0.44444448, y: 0.25, z: 1}
   m_Children: []
   m_Father: {fileID: 9127182992879137412}
@@ -268,7 +268,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 40
+  orthographic size: 30
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -326,7 +326,7 @@ Transform:
   m_GameObject: {fileID: 9127182992879137433}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
+  m_LocalScale: {x: 1.1, y: 1.1, z: 1}
   m_Children:
   - {fileID: 9127182991314768247}
   - {fileID: 5422837448880488524}
@@ -5298,8 +5298,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.18705311, y: 5.388087}
-  m_Size: {x: 2.2197957, y: 11.630428}
+  m_Offset: {x: -0.18705308, y: 7.6019316}
+  m_Size: {x: 2.2197957, y: 16.058117}
   m_Direction: 0
 --- !u!95 &125049050
 Animator:

@@ -23,7 +23,6 @@ public class PlayerMovement : MonoBehaviour
         _animator.SetInteger("MoveHorizontal",  (int)Math.Round(moveHorizontal));
         var moveVertical = Input.GetAxisRaw("Vertical") * 0.6;
         _animator.SetInteger("MoveVertical", (int)Math.Round(moveVertical));
-        Debug.Log($"h = {moveVertical} v = {moveHorizontal}");
 
         // Создаем вектор движения
         var movement = new Vector2(moveHorizontal, (float)moveVertical).normalized;
