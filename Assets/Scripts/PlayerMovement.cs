@@ -16,11 +16,11 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         // Получаем ввод от пользователя
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+        var moveHorizontal = Input.GetAxisRaw("Horizontal");
+        var moveVertical = Input.GetAxisRaw("Vertical") * 0.6;
 
         // Создаем вектор движения
-        Vector2 movement = new Vector2(moveHorizontal, moveVertical).normalized;
+        var movement = new Vector2(moveHorizontal, (float)moveVertical).normalized;
 
         // Применяем движение к Rigidbody
         _rb.velocity = movement * speed;
