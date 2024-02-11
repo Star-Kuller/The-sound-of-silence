@@ -13,7 +13,9 @@ public class AIInfraSound : MonoBehaviour
     [SerializeField] private int playerDetectedEmitCount = 150;
     private Collider2D _playerCollider;
     private Transform _playerTransform;
-    private List<Transform> _playerWay = new List<Transform>();
+    private int _currentPlayerWayIndex = 0;
+    private bool _playerDetected = false;
+    [SerializeField] private List<Vector3> _playerWay = new List<Vector3>();
     private State _state = State.Idle;
     
     private bool isChasing = false;
@@ -47,6 +49,7 @@ public class AIInfraSound : MonoBehaviour
                 Gizmos.DrawLine(waypoint.position, nextWaypoint.position);
             }
         }
+        if(_playerWay.Count > 0) Gizmos.DrawSphere(_playerWay[_currentPlayerWayIndex], 10);
     }
     
     private void Start()
@@ -65,13 +68,14 @@ public class AIInfraSound : MonoBehaviour
                 Idle();
                 break;
             case State.PlayerDetected:
-                StartCoroutine(Wait5Sec());
+                if (!_playerDetected)
+                {
+                    _playerDetected = true;
+                    StartCoroutine(Wait5Sec());
+                }
                 break;
             case State.Aggressive:
-                _rb.MovePosition(Vector3.MoveTowards(
-                    _rb.position,
-                    _playerTransform.position,
-                    speed));
+                Attack();
                 break;
             case State.Wait:
                 break;
@@ -85,15 +89,27 @@ public class AIInfraSound : MonoBehaviour
     {
         playerDetectedEmitter.Emit(playerDetectedEmitCount);
         yield return new WaitForSeconds(5);
+        var position = _playerTransform.position;
+        _playerWay.Add(position);
+        _playerWay.Add(position);
         _state = State.Aggressive;
+        _playerDetected = true;
     }
 
     private void OnParticleCollision(GameObject other)
     {
-        if (other.CompareTag("Player"))
+        if (!other.CompareTag("Player")) return;
+        if (_state == State.Aggressive)
         {
-            isChasing = true;
+            var position = _playerTransform.position;
+            if(Vector2.Distance(_playerWay[_playerWay.Count-1], position) < 5f)
+                    return;
+            Debug.Log(position);
+            _playerWay.Add(position);
         }
+            
+        
+        isChasing = true;
     }
 
     private void Idle()
@@ -101,19 +117,37 @@ public class AIInfraSound : MonoBehaviour
         if (isChasing) _state = State.PlayerDetected;
         
         if (waypoints.Count <= 0) return;
-        _rb.MovePosition(Vector3.MoveTowards(
+        _rb.MovePosition(Vector2.MoveTowards(
             _rb.position,
             waypoints[_currentWaypointIndex].position,
             speed));
         
         if (_currentWaypointIndex+1 == waypoints.Count && stopAtEnd) return;
         
-        if (!(Vector3.Distance(transform.position, waypoints[_currentWaypointIndex].position) < 0.1f)) return;
+        if (!(Vector2.Distance(transform.position, waypoints[_currentWaypointIndex].position) < 0.1f)) return;
         _currentWaypointIndex++;
         if (!circularRoute && _currentWaypointIndex == waypoints.Count)
             waypoints.Reverse();
         
         if (_currentWaypointIndex == waypoints.Count)
             _currentWaypointIndex = 0;
+    }
+    
+    private void Attack()
+    {
+        if(_currentPlayerWayIndex == _playerWay.Count)
+        {
+            if(Vector2.Distance(transform.position, _playerTransform.position) < 5f)
+                _playerWay.Add(_playerTransform.position);
+            else
+                return;
+        };
+        
+        _rb.MovePosition(Vector2.MoveTowards(
+            _rb.position,
+            _playerWay[_currentPlayerWayIndex],
+            speed*2));
+        if(Vector2.Distance(transform.position,_playerWay[_currentPlayerWayIndex]) < 0.1f)
+            _currentPlayerWayIndex++;
     }
 }
