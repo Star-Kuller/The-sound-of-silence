@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
         float moveVertical = Input.GetAxis("Vertical");
 
         // Создаем вектор движения
-        Vector2 movement = new Vector2(moveHorizontal, moveVertical);
+        Vector2 movement = new Vector2(moveHorizontal, moveVertical).normalized;
 
         // Применяем движение к Rigidbody
         _rb.velocity = movement * speed;
